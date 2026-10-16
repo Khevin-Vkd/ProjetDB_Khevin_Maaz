@@ -135,7 +135,7 @@ Ton entreprise veut appliquer MERISE pour concevoir un système d'information. T
 
 Le MCD est fait avec Looping (fichier source : `mcd_complet.loo`).
 
-![MCD](MCD_image.png)
+![MCD](MCD_final_reajuste.png)
 
 A noter que la table "Parfum" ne represente pas un produit mais l'odeur cree par le parfumeur. 
 
