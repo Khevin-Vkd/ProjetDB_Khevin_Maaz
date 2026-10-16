@@ -9,8 +9,8 @@ Pour ce projet on a choisi le domaine des parfums en s'inspirant de la maison Dr
 
 ```
 README.md
-mcd_complet.loo   (fichier source Looping)
-mcd_image.png   (image du MCD)
+MCD_Complete.loo   (fichier source Looping)
+MCD_image.png   (image du MCD)
 ```
 
 ## Sommaire
@@ -123,7 +123,7 @@ Ton entreprise veut appliquer MERISE pour concevoir un système d'information. T
 
 Le MCD est fait avec Looping (fichier source : `mcd_complet.loo`).
 
-![MCD](mcd_image.png)
+![MCD](MCD_image.png)
 
 ### Les entités
 
