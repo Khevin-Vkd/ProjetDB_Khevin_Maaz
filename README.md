@@ -1,9 +1,21 @@
 # Mini-projet BDD – Partie 1
 
-Pour ce projet on a choisi le domaine des parfums en s'inspirant de la maison Dries Van Noten. Cette partie 1 contient l'analyse des besoins (prompt, règles de gestion, dictionnaire de données) et le MCD.
-
 - Binôme : *Maaz NORAT, Khevin VONGKORAD *
 - Outil de modélisation : Looping
+
+## Choix du sujet de creation du MCD
+
+Dans le cadre du projet de creation d’un modele conceptuel relationnel, nous avons decide de créer une base de donnees s’appuyant sur l’activite commerciale de la marque DRIES VAN NOTEN.
+
+Qui est Dries Van Noten ? 
+Dries Van Noten est un tailleur ou createur d’articles de modes specialise dans les combinaisons impossibles. Il est ne et a grandi a Anvers ou il a rejoint la celebre academie de mode d’Anvers. En tant que couturier renomme, il a realise de nombreux defiles de mode ce qui l’a conduit dans le prestigieux univers de la parfumerie de niche.
+
+Le MCD realise se concentre principalement sur les produits de parfumerie et cosmetique que la marque propose. Nous reprenons donc en premier temps, un modele simple de vente avec un Client, un Produit ainsi que d’une Commande. Une differentiation notable entre les entreprises specialisees dans la vente de produits et celles qui vendent des articles de luxe. Les entreprises de luxe souhaitent récupérer les donnees des produits vendus ainsi que celles des clients qui les ont achetes.
+
+L’ecriture de notre prompt
+
+C’est dans cette optique que nous avons sollicite l’IAG Claude pour la precision de ses réponses ainsi que la possibilite de partager des conversation entre binomes.
+
 
 ## Fichiers du dépôt
 
@@ -124,6 +136,8 @@ Ton entreprise veut appliquer MERISE pour concevoir un système d'information. T
 Le MCD est fait avec Looping (fichier source : `mcd_complet.loo`).
 
 ![MCD](MCD_image.png)
+
+A noter que la table "Parfum" ne represente pas un produit mais l'odeur cree par le parfumeur. 
 
 ### Les entités
 
