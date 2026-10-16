@@ -211,9 +211,14 @@ Le premier attribut de chaque entité est son identifiant.
 | 13 Disponibilité du produit | Pas mise | On peut la déduire du stock (stock à 0 = indisponible). Si on garde les deux, `disponible` dépend de `stock`, donc ça casse la 3FN. |
 | 18 Quantité d'un parfum dans un coffret | Attribut `quantite_parfums` de l'association Correspond | Elle dépend du couple produit/parfum, pas d'un seul des deux. |
 | 24 Adresse de livraison | Découpée en `numero_voie`, `code_postal`, `ville`, `pays`, avec une entité Adresse (`id_adresse`) | Une adresse n'est pas une donnée atomique. L'entité Adresse sert à la fois pour Client (Vit) et pour Commande (Est_Livre). |
-| 7 Notes olfactives | Entité Notes liée à Parfum (association possede) | Un parfum a plusieurs notes et une même note peut être dans plusieurs parfums. |
+| 7 Notes olfactives | Entité Note liée à Parfum (association possede) | Un parfum a plusieurs notes et une même note peut être dans plusieurs parfums. |
 | 30 Mode de paiement | Entité Mode de Paiement | Les mêmes valeurs (carte, PayPal...) reviennent dans beaucoup de commandes. |
-| 31 Mode de livraison | Entité Mode_de_livraison, avec `libelle_mode_livraison` | Pareil que le paiement : standard et express reviennent dans beaucoup de commandes, donc on ne répète pas le libellé à chaque fois. |
+| 31 Mode de livraison | Entité Mode_de_livraison, avec `libelle_mode_livraison` | Pareil que le paiement : standard et express reviennent dans
+beaucoup de commandes, donc on ne répète pas le libellé à chaque fois. |
+| 11 Prix TTC en euros | Remplace par 'prix_produit' | Dans notre contexte, le prix TTC est implicite |
+| 9 Composition | Remplace par l'attribut 'nom_note' dans la table Note | La composition ne respecte pas la 1N car elle possede plusieurs ingredients. Elle est de plus obsolete car la table Note existe deja. |
+| Remplit | Modification du nom par 'Recharge' | Beaucoup plus explicite, une recharge peut recharger un flacon de parfum. |
+| Nez ou Parfumeur | Ajout de l'attribut 'nez_parfum' | On considere que l'attribut est important a renseigner |
 
 ### Problèmes relevés dans le retour de l'IA
 
