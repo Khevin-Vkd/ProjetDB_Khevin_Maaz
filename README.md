@@ -121,7 +121,7 @@ Ton entreprise veut appliquer MERISE pour concevoir un système d'information. T
 
 ## 2. MCD
 
-Le MCD est fait avec Looping (fichier source : `mcd/mcd_complet.loo`).
+Le MCD est fait avec Looping (fichier source : `mcd_complet.loo`).
 
 ![MCD](mcd_image.png)
 
