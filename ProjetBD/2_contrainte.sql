@@ -7,15 +7,27 @@ CHECK (email_client REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,}$');
  
 ALTER TABLE Client
 ADD CONSTRAINT ck_client_telephone
-CHECK (telephone_client REGEXP '^0[1-9][0-9]{8}$');
+CHECK (telephone_client REGEXP '^0[1-9][0-9]{8}$'),
+ 
+ALTER TABLE Client
+ADD CONSTRAINT age_client 
+CHECK (prix_produit > 18);
+
+ALTER TABLE Client
+ADD CONSTRAINT genre_client
+CHECK (genre_client IN ('homme', 'femme', 'autre'));
  
 ALTER TABLE Adresse
 ADD CONSTRAINT ck_adresse_code_postal
 CHECK (code_postal REGEXP '^[0-9]{5}$');
- 
+
+ALTER TABLE Adresse
+ADD CONSTRAINT ville_composee
+CHECK (ville NOT LIKE '% %'); 
+
 ALTER TABLE Mode_de_Paiement
 ADD CONSTRAINT ck_paiement_libelle
-CHECK (libelle_mode_paiement IN ('paypal', 'mastercard', 'visa'));
+CHECK (libelle_mode_paiement IN ('paypal', 'mastercard', 'visa', 'alipay'));
  
 ALTER TABLE Commande
 ADD CONSTRAINT ck_commande_statut
