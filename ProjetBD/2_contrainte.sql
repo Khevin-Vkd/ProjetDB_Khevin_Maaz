@@ -40,7 +40,7 @@ CHECK (statut_retour IN ('en attente', 'en cours', 'retourné'));
 ALTER TABLE Produit
 ADD CONSTRAINT ck_produit_prix CHECK (prix_produit > 0);
  
-ALTER TABLE Produit
+ALTER TABLE Correspond
 ADD CONSTRAINT ck_produit_stock CHECK (stock_produit >= 0);
  
 ALTER TABLE Produit
