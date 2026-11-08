@@ -1,6 +1,7 @@
 CREATE TABLE Parfum(
    id_parfum INT,
    nom_parfums VARCHAR(50) NOT NULL,
+   annee_creation INT(4) NOT NULL,
    famille_olfactive VARCHAR(50) NOT NULL,
    concentration_parfum INT NOT NULL,
    nez_parfum VARCHAR(50) NOT NULL,
@@ -35,7 +36,6 @@ CREATE TABLE Produit(
    contenance_ml_produit INT NOT NULL,
    prix_produit DECIMAL(10,2) NOT NULL,
    description_produit VARCHAR(255) NOT NULL,
-   date_mise_en_vente DATE NOT NULL,
    reference_produit_1 VARCHAR(50),
    PRIMARY KEY(reference_produit),
    FOREIGN KEY(reference_produit_1) REFERENCES Produit(reference_produit)
