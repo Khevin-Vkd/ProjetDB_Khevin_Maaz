@@ -35,7 +35,6 @@ CREATE TABLE Produit(
    contenance_ml_produit INT NOT NULL,
    prix_produit DECIMAL(10,2) NOT NULL,
    description_produit VARCHAR(255) NOT NULL,
-   stock_produit INT NOT NULL,
    date_mise_en_vente DATE NOT NULL,
    reference_produit_1 VARCHAR(50),
    PRIMARY KEY(reference_produit),
@@ -125,6 +124,7 @@ CREATE TABLE possede(
 CREATE TABLE Correspond(
    id_parfum INT,
    reference_produit VARCHAR(50),
+   stock_produit INT NOT NULL,
    quantite_parfums INT NOT NULL,
    PRIMARY KEY(id_parfum, reference_produit),
    FOREIGN KEY(id_parfum) REFERENCES Parfum(id_parfum),
