@@ -23,6 +23,7 @@ C’est dans cette optique que nous avons sollicite l’IAG Claude pour la preci
 README.md
 MCD_Complete.loo   (fichier source Looping)
 MCD_image.png   (image du MCD)
+projetBD
 ```
 
 ## Sommaire
@@ -30,6 +31,8 @@ MCD_image.png   (image du MCD)
 1. [Analyse des besoins](#1-analyse-des-besoins)
 2. [MCD](#2-mcd)
 3. [Ce qu'on a changé et pourquoi](#3-ce-quon-a-changé-et-pourquoi)
+4. [Création des tables](#4-création-des-tables)
+5. [Contraintes d'intégrité](#5-contraintes-dintégrité)
 
 ---
 
@@ -239,3 +242,88 @@ beaucoup de commandes, donc on ne répète pas le libellé à chaque fois. |
 - Un client qui commande sans être inscrit n'a pas de fiche Client, donc on ne garde ni son nom ni son e-mail, seulement l'adresse de livraison de sa commande.
 - Un produit retourné doit faire partie de la commande d'origine du retour. Le MCD ne peut pas le dire, ce sera une contrainte à ajouter en SQL.
 - Une recharge doit avoir `type_produit` = recharge et ne peut remplir qu'un flacon. Contrainte à ajouter en SQL aussi.
+
+## 4. Création des tables
+
+On a passé le MCD en tables pour MySQL. Le script est coupé en trois fichiers, à lancer dans cet ordre :
+
+| Fichier | Ce qu'il fait |
+|---|---|
+| `drop_table_file.sql` | supprime les tables |
+| `01_creation.sql` | crée les 15 tables (types, `NOT NULL`, clés primaires et étrangères) |
+| `02_contrainte.sql` | ajoute les contraintes d'intégrité |
+
+### Ordre de suppression
+
+Dans `drop_table_file.sql` on supprime d'abord les tables qui contiennent des clés étrangères (`Retourne`, `Retour`, `Correspond`, `possede`, `Contient_panier`, `Commande`, `Panier`, `Client`, `Adresse`), puis celles qui sont référencées. Le `IF EXISTS` permet de relancer le script sans erreur.
+
+### Du MCD aux tables
+
+- Les associations 0,n - 0,n sont devenues des tables : `Contient_panier`, `Correspond`, `possede` et `Retourne`.
+- `Retour` a une clé primaire composée (`Num_commande`, `num_retour`), à cause de l'identifiant relatif.
+- Les associations avec un 1,1 côté Commande sont des clés étrangères dans `Commande` (paiement, livraison, adresse, panier).
+- `Commande.Id_panier` est `UNIQUE` : Devient est en 0,1 côté Panier, donc un panier ne donne qu'une commande au plus.
+- Recharge est la colonne `reference_produit_1` de `Produit`, clé étrangère vers `Produit`. Elle est facultative puisque tous les produits ne sont pas des recharges.
+- Constitue est la colonne `numero_client` dans `Panier`, facultative aussi (on peut commander sans être inscrit).
+- Applique est la colonne `code_promotion` dans `Commande`, facultative (pas de promotion sur toutes les commandes).
+
+### Choix des types
+
+| Attribut | Type | Pourquoi |
+|---|---|---|
+| `telephone_client` | `CHAR(10)` | un `INT` perd le 0 du début et ne tient pas sur 10 chiffres |
+| `code_postal` | `CHAR(5)` | un `INT` transformerait `01000` en `1000` |
+| `numero_voie` | `VARCHAR(10)` | pour pouvoir écrire « 12 bis » |
+| `prix_produit`, `prix_unitaire_commande`, `frais_livraison` | `DECIMAL(10,2)` | sous MySQL, `DECIMAL` tout seul vaut `DECIMAL(10,0)`, donc 19,99 serait arrondi à 20 |
+| `description_produit` | `VARCHAR(255)` | 50 caractères c'est trop court pour une description |
+
+### NOT NULL
+
+Tous les attributs sont `NOT NULL` sauf trois, qui sont facultatifs d'après les cardinalités du MCD : `Panier.numero_client`, `Commande.code_promotion` et `Produit.reference_produit_1`.
+
+### Ce qui a changé dans Adresse
+
+- On a ajouté `nom_voie` : l'entité avait un numéro de voie mais pas de nom de rue.
+- On a enlevé `pays`. On voulait d'abord un format de téléphone et de code postal international, mais ces formats changent selon le pays et ça compliquait trop l'implémentation. On a donc simplifié : le site vend et livre en France uniquement, ce qui rend `pays` inutile.
+
+---
+
+## 5. Contraintes d'intégrité
+### Contraintes sur une seule colonne
+
+| Attribut | Règle |
+|---|---|
+| `Client.email_client` | format d'e-mail (regex) et `UNIQUE` |
+| `Client.telephone_client` | format français : 10 chiffres, commence par 0 puis 1 à 9 |
+| `Adresse.code_postal` | 5 chiffres |
+| `Mode_de_Paiement.libelle_mode_paiement` | `paypal`, `mastercard` ou `visa` |
+| `Commande.statut_commande` | `en attente`, `en cours` ou `livré` |
+| `Retour.statut_retour` | `en attente`, `en cours` ou `retourné` |
+| `Produit.prix_produit` | strictement positif |
+| `Produit.stock_produit` | supérieur ou égal à 0 |
+| `Produit.contenance_ml_produit` | strictement positive |
+| `Parfum.concentration_parfum` | entre 1 et 100 (c'est un pourcentage) |
+| `Promotion.remise_promotion` | entre 1 et 100 (c'est un pourcentage) |
+| `Commande.frais_livraison` | supérieur ou égal à 0 (la livraison peut être offerte) |
+| `Commande.prix_unitaire_commande` | supérieur ou égal à 0 |
+| `Contient_panier.quantite` | strictement positive |
+| `Correspond.quantite_parfums` | strictement positive |
+| `Retourne.quantite_retourne` | strictement positive |
+
+Il y a aussi une contrainte entre deux colonnes d'une même table : `Produit.reference_produit_1` doit être différent de `Produit.reference_produit`, un produit ne peut pas être sa propre recharge.
+
+### Nos choix
+
+- **Statuts** : on a gardé trois valeurs au lieu des quatre données par l'IA (en préparation, expédiée, livrée, retournée). Pour un retour on dit `retourné` et pas `livré`, parce qu'un retour n'est pas livré.
+- **Recharge** : une recharge est un produit différent du flacon qu'elle remplit, et une recharge ne peut pas elle-même être rechargée (pas de chaîne de recharges).
+- **Retours** : la quantité retournée est strictement positive, sinon un retour d'un produit en quantité 0 n'aurait pas de sens.
+
+### Règles entre plusieurs tables
+
+Ces règles ne sont pas appliquées par la base. Elles portent sur plusieurs tables, et un CHECK MySQL ne peut pas lire une autre table. Il faudrait des triggers, mais on ne les a pas encore vus en cours, donc on ne les a pas ajoutés. Elles restent des règles de gestion que l’application devra vérifier.
+
+1. `Retour.date_retour` doit être après `Commande.date_commande` (via Concerne). `date_retour` est la date de confirmation du retour.
+2. Pour une même commande et un même produit, la somme des `quantite_retourne` ne dépasse pas la quantité de ce produit dans le panier de la commande. Le produit retourné doit aussi faire partie de ce panier. C'est la règle dont on parlait en partie 2 dans le paragraphe sur les produits retournés.
+3. Le produit référencé par `reference_produit_1` n'est pas lui-même une recharge.
+4. Une recharge et le produit qu'elle remplit correspondent au même parfum (via Correspond).
+5. `Panier.date_creation` est avant ou le même jour que `Commande.date_commande`.
