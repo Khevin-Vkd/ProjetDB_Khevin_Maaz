@@ -56,6 +56,8 @@ CREATE TABLE Mode_de_livraison(
  
 CREATE TABLE Client(
    numero_client INT,
+   genre_client VARCHAR(50) NOT NULL,
+   age_client INT NOT NULL,
    nom_client VARCHAR(50) NOT NULL,
    prenom_client VARCHAR(50) NOT NULL,
    email_client VARCHAR(50) NOT NULL,
