@@ -27,7 +27,7 @@ CHECK (ville NOT LIKE '% %');
 
 ALTER TABLE Mode_de_Paiement
 ADD CONSTRAINT ck_paiement_libelle
-CHECK (libelle_mode_paiement IN ('paypal', 'mastercard', 'visa', 'alipay'));
+CHECK (libelle_mode_paiement IN ('paypal', 'mastercard', 'visa'));
  
 ALTER TABLE Commande
 ADD CONSTRAINT ck_commande_statut
