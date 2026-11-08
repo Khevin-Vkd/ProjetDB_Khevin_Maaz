@@ -11,7 +11,7 @@ CHECK (telephone_client REGEXP '^0[1-9][0-9]{8}$'),
  
 ALTER TABLE Client
 ADD CONSTRAINT age_client 
-CHECK (prix_produit > 18);
+CHECK (age_client > 18);
 
 ALTER TABLE Client
 ADD CONSTRAINT genre_client
