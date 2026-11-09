@@ -334,7 +334,32 @@ Nous avons choisi Claude.IA afin de créer nos données. L'objectif était de cr
 
 -------------------------------------------------------
 
+Donne les requêtes d’insertion permettant de remplir la base de données dont le modèle relationnel est le suivant sont envoyes dans les fichiers 1_creation.sql
+Les clés primaires correspondent aux id, sauf si autre chose est précisé (quand c'est un attribut composé) les clés étrangères sont identifiées par les #, et ont le même nom que les clés primaires auxquelles elles font référence 
+Les éléments de la base de données doivent être repris en fonctions des informations dont tu disposes pour la marque DRIES VAN NOTEN en parfumerie uniquement.
+Les produits sont au nombre de 4 dont voici les caracteristiques :
+-	Nom : Flacon, type : Flacon , contenance : 100ml , prix : 275, description : « flacon 100ml rechargeable » 
+-	Nom : recharge , type : Recharge , contenance : 100ml , prix : 275, description : « flacon 100ml rechargeable » 
+ 
+Il doit y avoir : 
+20 lignes pour la table Parfum qui sont les parfums de la marque DRIES VAN NOTEN qui ont au moins 5 notes chacun, 60 lignes pour la table Note. La table Produit est composée de 3 types de produits : flacon , recharge, set. Voici les informations des produits beneficiants de sets :
+-	Nom : antwerp set, type : set, contenance : 40, prix : 133, description : « set iconique des 4 best sellers », stock : 12, correspond a quatre parfums : Soie Malaquais, Fleur du Mal, Camomille Satin, Rock the Myrrh
+-	Nom : floral set, type : set, contenance : 30, prix : 187, description : « set iconique des 3 best sellers floraux », stock : 8, correspond a trois parfums : Soie Malaquais, Fleur du Mal, Vanille Camouflage
+-	Nom : woody set, type : set, contenance : 30, prix : 187, description : « set iconique des 3 best sellers boisees», stock : 15, correspond a trois parfums : Cannabis Patchouli, Crazy Basil, Rock the Myrrh
 
+Pour tous les autres produits dont le type est « recharge » ou « flacon », créer des produits pour chacun des parfums existants. 
+Il doit aussi avoir :
+20 lignes pour la table Panier qui contiennent un ou plusieurs produits, 60 lignes pour la table Client chaque client est lie a une adresse et il est possible que deux clients partagent la meme adresse. 
+40 lignes de Commandes, 4 lignes de Mode_de_Paiement (paypal, visa, mastercard, alipay), 5 lignes de promotions, 6 lignes de Mode_de_Livraison, 7 lignes de Retour et 7 lignes de retourne.
+
+Les clés étrangères doivent faire référence aux clés primaires existantes : donne les lignes en commençant par remplir les tables dans lesquelles il n'y a pas de clés étrangères, puis les tables dans lesquelles les clés étrangères font références à des clés primaires des tables déjà remplies. 
+
+Les données doivent respecter les contraintes de validation suivantes :
+ainsi que ses contraintes sont envoyes dans le fichier 2_contraintes.sql
+
+Assure-toi que les noms et prénoms des clients font références à des origines variées et sont mixtes. 
+
+Fournis l'ensemble sous la forme d’un script SQL prêt à être exécuté.
 
 -------------------------------------------------------
 
