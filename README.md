@@ -397,11 +397,19 @@ D'autres requêtes ont aussi été ajoutées permettant de voir les différents 
 
 Nous avons opté pour cette requête : Le nom de tous les produits dont le parfum est « Soie Malaquais »
 
+-------------------------------------------------------
+
 SELECT pr.nom_produit
+
 FROM Parfum p
+
 JOIN Correspond c ON c.id_parfum = p.id_parfum
+
 JOIN Produit pr ON pr.reference_produit = c.reference_produit
+
 WHERE p.nom_parfums = "Soie Malaquais" ;
+
+-------------------------------------------------------
 
 Cela correspond en algebre :
 π nom_produit ( σ nom_parfums='Soie Malaquais' (Parfum) ⋈ Correspond ⋈ Produit )
