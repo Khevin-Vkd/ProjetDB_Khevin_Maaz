@@ -393,3 +393,30 @@ Parfum :
 
 D'autres requêtes ont aussi été ajoutées permettant de voir les différents produits, certaines informations sur les clients ou comparer des prix.
 
+### Etude du meilleur plan d'intégration
+
+Nous avons opté pour cette requête : Le nom de tous les produits dont le parfum est « Soie Malaquais »
+
+SELECT pr.nom_produit
+FROM Parfum p
+JOIN Correspond c ON c.id_parfum = p.id_parfum
+JOIN Produit pr ON pr.reference_produit = c.reference_produit
+WHERE (p.nom_parfums = "Soie Malaquais")
+GROUP BY pr.reference_produit, pr.nom_produit
+ORDER BY pr.nom_produit ASC;
+
+π nom_produit                          → 3 lignes
+ └─ σ nom_parfums='Soie Malaquais'     → 3 lignes
+     └─ ⋈ (Produit)                    → 30 lignes
+         ├─ ⋈ (Correspond)             → 30 lignes
+         │   ├─ Parfum                 → 10 lignes
+         │   └─ Correspond             → 30 lignes
+         └─ Produit                    → 25 lignes
+
+π nom_produit                          → 3 lignes
+ └─ ⋈ (Produit)                        → 3 lignes
+     ├─ ⋈ (Correspond)                 → 3 lignes
+     │   ├─ σ nom_parfums='Soie…'      → 1 ligne
+     │   │   └─ Parfum                 → 10 lignes
+     │   └─ Correspond                 → 30 lignes
+     └─ Produit                        → 25 lignes
