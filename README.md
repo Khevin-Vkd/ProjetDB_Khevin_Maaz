@@ -327,3 +327,42 @@ Ces règles ne sont pas appliquées par la base. Elles portent sur plusieurs tab
 3. Le produit référencé par `reference_produit_1` n'est pas lui-même une recharge.
 4. Une recharge et le produit qu'elle remplit correspondent au même parfum (via Correspond).
 5. `Panier.date_creation` est avant ou le même jour que `Commande.date_commande`.
+
+### Insertion de nos données
+
+Nous avons choisi Claude.IA afin de créer nos données. L'objectif était de créer une base la plus exploitable possible en incluant des doublons pour mieux tester notre base, voici le script utilisé :
+
+-------------------------------------------------------
+
+
+
+-------------------------------------------------------
+
+### Interrogation de la base de données
+
+SCENARIO D’UTILISATION
+
+Le service Reportings de DRIES VAN NOTEN  est chargé de récupérer les données récoltées de la base de données afin de les transformer en dashboards Power BI afin de les présenter aux décisionnaires des futures actions de l’entreprise. Ces dashboards sont composés de plusieurs pages dont les pages :
+
+Ventes : 
+- Chiffre d’affaires réalisé au total, par statut et avec les reductions appliquées
+- Un tableau décroissant des Top Produits qui ont été vendus (Produit - Quantite - CA)
+- Chiffre d’affaires de tous les produits dont le parfum est « Soie Malaquais »
+
+Clients :
+- La densité de femmes / hommes qui ont acheté un produit
+- Les types de produits achetés par tranche d’age définies (18-25 ; 25-36 ; 36-45 ; +45)
+- Un classement des villes les plus acheteuses
+- Les clients qui ont le meme age
+
+Commandes :
+- Le statut de livraisons
+- Le nombre de retours
+- Les commandes passées avec un code de promotion et le code qui a le plus été utilise
+
+Parfum :
+- Les parfums ainsi que leur composition olfactive
+- Les parfums qui ne contiennent pas l’ingredient « vanille »
+
+D'autres requêtes ont aussi été ajoutées permettant de voir les différents produits, certaines informations sur les clients ou comparer des prix.
+
