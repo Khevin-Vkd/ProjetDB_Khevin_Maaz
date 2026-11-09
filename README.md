@@ -420,18 +420,11 @@ Comme on peut le voir ici, le résultat n'est pas optimal
 ![MCD](diagramme_A.png)
 
 
-π nom_produit                          → 4 lignes
- └─ σ nom_parfums='Soie Malaquais'     → 4 lignes
-     └─ ⋈ (Produit)                    → 50 lignes
-         ├─ ⋈ (Correspond)             → 50 lignes
-         │   ├─ Parfum                 → 20 lignes
-         │   └─ Correspond             → 50 lignes
-         └─ Produit                    → 43 lignes
+On choisi alors de sélectionner en premier tous les produits dont le parfum est "Soie Malaquais" puis d'effectuer les jointures
+Cela correspond en algebre :
+π nom_produit ( ( σ nom_parfums='Soie Malaquais' (Parfum) ⋈ Correspond ) ⋈ Produit )
 
-π nom_produit                         
- └─ ⋈ (Produit)                        
-     ├─ ⋈ (Correspond)                 
-     │   ├─ σ nom_parfums='Soie…'      
-     │   │   └─ Parfum                
-     │   └─ Correspond                 
-     └─ Parfum                       
+![MCD](diagramme_B.png)
+
+Cette fois, on réduit drastiquement les valeurs que l'algorithme doit chercher, ce qui rend cette série d'instruction optimale.
+
