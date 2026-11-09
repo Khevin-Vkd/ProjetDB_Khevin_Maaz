@@ -363,6 +363,8 @@ Fournis l'ensemble sous la forme d’un script SQL prêt à être exécuté.
 
 -------------------------------------------------------
 
+Les données retournées par l'IA ont été directement exploitables. Il y a eu léger problème concernant les identifiants des retours qui étaient les mêmes et nous aurions aimé que certains noms ou prénoms de clients soient aussi identiques afin de mieux tester les doublons.
+
 ### Interrogation de la base de données
 
 SCENARIO D’UTILISATION
