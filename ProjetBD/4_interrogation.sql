@@ -12,6 +12,12 @@ FROM Commande c
 LEFT JOIN Promotion p ON p.code_promotion = c.code_promotion
 GROUP BY c.statut_commande;
 
+/* Les commandes entre 100 et 200 euros */
+SELECT Num_commande, prix_unitaire_commande
+FROM Commande
+WHERE prix_unitaire_commande BETWEEN 100 AND 200
+ORDER BY prix_unitaire_commande ASC;
+
 /* Classement de tous les produits vendus par Quantite Vendues */
 SELECT pr.nom_produit AS Produit, SUM(cp.quantite) AS Quantités_vendues, SUM(co.prix_unitaire_commande) AS CA
 FROM Parfum p
@@ -33,12 +39,25 @@ WHERE (p.nom_parfums = "Soie Malaquais")
 GROUP BY pr.reference_produit, pr.nom_produit
 ORDER BY pr.nom_produit ASC;
 
+/* Clients dont le nom commence par M */
+SELECT 
+numero_client,
+nom_client,
+prenom_client
+FROM Client
+WHERE nom_client LIKE "M%" ;
+
 /* Clients par genre */
 SELECT
 SUM(genre_client = "homme") AS Hommes,
 SUM(genre_client = "femme") AS Femmes,
 SUM(genre_client = "autre") AS Autres
 FROM Client ; 
+
+/* Clients triés par âge décroissant puis par nom */
+SELECT nom_client, prenom_client, age_client
+FROM Client
+ORDER BY age_client DESC, nom_client ASC;
 
 /* Les types de produits achetés par tranche d’age définies */
 SELECT
@@ -55,15 +74,64 @@ JOIN Produit pr ON pr.reference_produit = cp.reference_produit
 GROUP BY pr.type_produit
 ORDER BY type_produit ASC;
 
+/* Les villes existantes dans la base de donnees */
+SELECT DISTINCT ville
+FROM Adresse
+ORDER BY ville ;
+
 /* Classement des villes par quantites vendues */
 SELECT 
 a.ville AS Ville, 
-SUM(cp.quantite) AS Quantites_venudues
+SUM(cp.quantite) AS Quantites_vendues
 FROM Adresse a
 JOIN Commande c ON c.id_adresse = a.id_adresse
 JOIN Contient_panier cp ON cp.id_panier = c.id_panier
-GROUP BY Ville
-ORDER BY Quantites_venudues DESC;
+GROUP BY a.ville
+ORDER BY Quantites_vendues DESC;
+
+/* Les clients qui ont le meme age (tous les clients ont des noms et prenoms differents) */
+SELECT age_client, COUNT(*) AS nombre
+FROM Client
+GROUP BY age_client
+HAVING COUNT(*) > 1 ;
+
+/* Les clients qui au moins deux commandes */
+SELECT 
+c.numero_client,
+c.nom_client,
+c.prenom_client,
+COUNT(co.Num_commande) AS "Nombre commandes"
+FROM Client c 
+JOIN Panier p ON p.numero_client = c.numero_client
+JOIN Commande co ON co.id_panier = p.id_panier
+GROUP BY c.numero_client, c.nom_client, c.prenom_client
+HAVING COUNT(*) > 1 ;
+
+/* Clients qui ont constitue un panier */
+SELECT nom_client, prenom_client
+FROM Client
+WHERE numero_client NOT IN (
+    SELECT numero_client
+    FROM Panier
+);
+
+/* Les produits dans un panier */
+SELECT nom_produit, type_produit
+FROM Produit
+WHERE reference_produit IN (
+    SELECT reference_produit
+    FROM Contient_panier
+);
+
+/* Les clients avec une commande livree */
+SELECT nom_client, prenom_client
+FROM Client c
+WHERE EXISTS (
+    SELECT 1
+    FROM Panier p
+    JOIN Commande co ON co.id_panier = p.id_panier
+    WHERE p.numero_client = c.numero_client AND co.statut_commande = "livré"
+);
 
 /* Statut des livraisons */
 SELECT
@@ -122,3 +190,25 @@ JOIN Note n ON n.id_note = psd.id_note
 WHERE psd.id_parfum = p.id_parfum AND n.nom_note = "Vanille"
 )
 ORDER BY p.nom_parfums;
+
+/* La liste des parfums */
+SELECT DISTINCT nom_parfums FROM Parfum
+ORDER BY nom_parfums;
+
+/* Les produits qui sont soit des flacons soit des recharges */
+SELECT 
+reference_produit,
+nom_produit 
+type_produit
+FROM Produit
+WHERE type_produit IN ('flacon', 'recharge')
+ORDER BY reference_produit ;
+
+/* Produits plus chers que tous les produits de type 'Set' */
+SELECT nom_produit, prix_produit
+FROM Produit
+WHERE prix_produit > ALL (
+    SELECT prix_produit
+    FROM Produit
+    WHERE type_produit = "Set"
+);
