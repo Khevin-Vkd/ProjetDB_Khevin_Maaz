@@ -406,15 +406,19 @@ WHERE p.nom_parfums = "Soie Malaquais" ;
 Cela correspond en algebre :
 π nom_produit ( σ nom_parfums='Soie Malaquais' (Parfum) ⋈ Correspond ⋈ Produit )
 
+Ici, on effectue d'abord les jointures afin de sélectionner tous les produits dont le parfum est "Soie Malaquais"
+Comme on peut le voir ici, le résultat n'est pas optimal
+
 ![MCD](diagramme_A.png)
 
-π nom_produit                          → 3 lignes
- └─ σ nom_parfums='Soie Malaquais'     → 3 lignes
-     └─ ⋈ (Produit)                    → 30 lignes
-         ├─ ⋈ (Correspond)             → 30 lignes
-         │   ├─ Parfum                 → 10 lignes
-         │   └─ Correspond             → 30 lignes
-         └─ Produit                    → 25 lignes
+
+π nom_produit                          → 4 lignes
+ └─ σ nom_parfums='Soie Malaquais'     → 4 lignes
+     └─ ⋈ (Produit)                    → 50 lignes
+         ├─ ⋈ (Correspond)             → 50 lignes
+         │   ├─ Parfum                 → 20 lignes
+         │   └─ Correspond             → 50 lignes
+         └─ Produit                    → 43 lignes
 
 π nom_produit                         
  └─ ⋈ (Produit)                        
