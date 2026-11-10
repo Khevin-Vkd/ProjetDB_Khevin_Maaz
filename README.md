@@ -412,7 +412,7 @@ WHERE p.nom_parfums = "Soie Malaquais" ;
 -------------------------------------------------------
 
 Cela correspond en algebre :
-π nom_produit ( σ nom_parfums='Soie Malaquais' (Parfum) ⋈ Correspond ⋈ Produit )
+π nom_produit ( σ nom_parfums='Soie Malaquais' ( (Parfum ⋈ Correspond) ⋈ Produit ) )
 
 Ici, on effectue d'abord les jointures afin de sélectionner tous les produits dont le parfum est "Soie Malaquais"
 Comme on peut le voir ici, le résultat n'est pas optimal
