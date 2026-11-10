@@ -1,8 +1,8 @@
 CREATE TABLE Parfum(
    id_parfum INT,
    nom_parfums VARCHAR(50) NOT NULL,
-   annee_creation INT(4) NOT NULL,
    famille_olfactive VARCHAR(50) NOT NULL,
+   annee_creation INT(4) NOT NULL,
    concentration_parfum INT NOT NULL,
    nez_parfum VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_parfum)
@@ -31,16 +31,17 @@ CREATE TABLE Adresse(
  
 CREATE TABLE Produit(
    reference_produit VARCHAR(50),
-   nom_produit VARCHAR(50) NOT NULL,
+   nom_produit VARCHAR(50),
    type_produit VARCHAR(50) NOT NULL,
    contenance_ml_produit INT NOT NULL,
    prix_produit DECIMAL(10,2) NOT NULL,
+   stock_produit INT NOT NULL,
    description_produit VARCHAR(255) NOT NULL,
    reference_produit_1 VARCHAR(50),
-   stock_produit INT NOT NULL,
    PRIMARY KEY(reference_produit),
    FOREIGN KEY(reference_produit_1) REFERENCES Produit(reference_produit)
 );
+
  
 CREATE TABLE Note(
    id_note INT,
