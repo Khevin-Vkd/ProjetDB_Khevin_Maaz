@@ -337,7 +337,7 @@ Nous avons choisi Claude.IA afin de créer nos données. L'objectif était de cr
 Donne les requêtes d’insertion permettant de remplir la base de données dont le modèle relationnel est le suivant sont envoyes dans les fichiers 1_creation.sql
 Les clés primaires correspondent aux id, sauf si autre chose est précisé (quand c'est un attribut composé) les clés étrangères sont identifiées par les #, et ont le même nom que les clés primaires auxquelles elles font référence 
 Les éléments de la base de données doivent être repris en fonctions des informations dont tu disposes pour la marque DRIES VAN NOTEN en parfumerie uniquement.
-Les produits sont au nombre de 4 dont voici les caracteristiques :
+Voici les caractéristiques des produits :
 -	Nom : Flacon, type : Flacon , contenance : 100ml , prix : 275, description : « flacon 100ml rechargeable » 
 -	Nom : recharge , type : Recharge , contenance : 100ml , prix : 275, description : « flacon 100ml rechargeable » 
  
@@ -350,7 +350,7 @@ Il doit y avoir :
 Pour tous les autres produits dont le type est « recharge » ou « flacon », créer des produits pour chacun des parfums existants. 
 Il doit aussi avoir :
 20 lignes pour la table Panier qui contiennent un ou plusieurs produits, 60 lignes pour la table Client chaque client est lie a une adresse et il est possible que deux clients partagent la meme adresse. 
-40 lignes de Commandes, 4 lignes de Mode_de_Paiement (paypal, visa, mastercard, alipay), 5 lignes de promotions, 6 lignes de Mode_de_Livraison, 7 lignes de Retour et 7 lignes de retourne.
+40 lignes de Commandes, 4 lignes de Mode_de_Paiement (paypal, visa, mastercard), 5 lignes de promotions, 6 lignes de Mode_de_Livraison, 7 lignes de Retour et 7 lignes de retourne.
 
 Les clés étrangères doivent faire référence aux clés primaires existantes : donne les lignes en commençant par remplir les tables dans lesquelles il n'y a pas de clés étrangères, puis les tables dans lesquelles les clés étrangères font références à des clés primaires des tables déjà remplies. 
 
@@ -378,14 +378,14 @@ Ventes :
 
 Clients :
 - La densité de femmes / hommes qui ont acheté un produit
-- Les types de produits achetés par tranche d’age définies (18-25 ; 25-36 ; 36-45 ; +45)
+- Les types de produits achetés par tranche d’age définies (18-25 ; 26-36 ; 37-45 ; +45)
 - Un classement des villes les plus acheteuses
 - Les clients qui ont le meme age
 
 Commandes :
 - Le statut de livraisons
 - Le nombre de retours
-- Les commandes passées avec un code de promotion et le code qui a le plus été utilise
+- Les commandes dont le prix_unitaire est réduit en fonction du code de promotion utilisé
 
 Parfum :
 - Les parfums ainsi que leur composition olfactive
@@ -415,16 +415,17 @@ Cela correspond en algebre :
 π nom_produit ( σ nom_parfums='Soie Malaquais' ( (Parfum ⋈ Correspond) ⋈ Produit ) )
 
 Ici, on effectue d'abord les jointures afin de sélectionner tous les produits dont le parfum est "Soie Malaquais"
-Comme on peut le voir ici, le résultat n'est pas optimal
+Comme on peut le voir ici, le plan n'est pas optimal ( ⋈ 50, ⋈ 50, σ 4, π 4)
 
-![MCD](diagramme_A.png)
+![diagramme A](diagramme_A.png)
 
 
 On choisi alors de sélectionner en premier tous les produits dont le parfum est "Soie Malaquais" puis d'effectuer les jointures
 Cela correspond en algebre :
 π nom_produit ( ( σ nom_parfums='Soie Malaquais' (Parfum) ⋈ Correspond ) ⋈ Produit )
 
-![MCD](diagramme_B.png)
+![diagramme B](diagramme_B.png)
 
-Cette fois, on réduit drastiquement les valeurs que l'algorithme doit chercher, ce qui rend cette série d'instruction optimale.
+Cette fois, on réduit drastiquement les valeurs que l'optimisateur doit chercher, ce qui rend cette série d'instruction optimale.
+( σ 1, ⋈ 4, ⋈ 4, π 4)
 
