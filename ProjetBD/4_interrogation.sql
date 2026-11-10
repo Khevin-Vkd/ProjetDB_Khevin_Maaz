@@ -89,7 +89,7 @@ JOIN Contient_panier cp ON cp.id_panier = c.id_panier
 GROUP BY a.ville
 ORDER BY Quantites_vendues DESC;
 
-/* Les clients qui ont le meme age (tous les clients ont des noms et prenoms differents) */
+/* Ages partages entre clients (tous les clients ont des noms et prenoms differents) */
 SELECT age_client, COUNT(*) AS nombre
 FROM Client
 GROUP BY age_client
@@ -107,7 +107,7 @@ JOIN Commande co ON co.id_panier = p.id_panier
 GROUP BY c.numero_client, c.nom_client, c.prenom_client
 HAVING COUNT(*) > 1 ;
 
-/* Clients qui ont constitue un panier */
+/* Clients qui ont n'ont pas constitue un panier */
 SELECT nom_client, prenom_client
 FROM Client
 WHERE numero_client NOT IN (
@@ -151,6 +151,7 @@ r1.statut_retour AS Statut
 FROM Retour r1
 LEFT JOIN Retourne r2 ON r1.Num_commande = r2.Num_commande AND r2.num_retour = r1.num_retour;
 
+/* Statistiques des retours */
 SELECT
 COUNT(DISTINCT r1.Num_commande, r1.num_retour) AS "Nombre de retours",
 COUNT(r2.reference_produit) AS "Produits retournés",
@@ -198,7 +199,7 @@ ORDER BY nom_parfums;
 /* Les produits qui sont soit des flacons soit des recharges */
 SELECT 
 reference_produit,
-nom_produit 
+nom_produit, 
 type_produit
 FROM Produit
 WHERE type_produit IN ('flacon', 'recharge')
